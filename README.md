@@ -215,6 +215,9 @@ There are several datasets that are prescribed for you to use in this part. Belo
     Discuss your accessibility metric and how you arrived at it below:
 
     **Description:**
+    * In `septa.bus_stops`, there is a `wheelchair_boarding` column, where 1 and 2 denote wheelchair accessible and inaccessible bus stops respectively. I only retain these two values for this question for further analysis.
+    * The accessibility metric is defined based on neighborhood area. More specifically, the accessibility metric is defined by dividing the total number of wheelchair accessible bus stops by the area of the neighborhood in square kilometers. The consideration of neighborhood area is based on the concern that larger neighborhoods are less accessible even with many wheelchair accessible bus stops due to the distance required to travel to reach a wheelchair accessible bus stop.
+    * To improve interpretability, the metric is normalized by a min-max normalization so that it falls between 0 and 1.
 
 6.  What are the _top five_ neighborhoods according to your accessibility metric?
 
@@ -240,7 +243,8 @@ There are several datasets that are prescribed for you to use in this part. Belo
     ```
 
     **Discussion:**
-
+    I used the `phl.pwd_parcels` dataset for defining Penn's campus. From the columns `owner1` and `owner2`, I extract possible aliases of UPenn, such as "TRS UNIV PENN", "UNIVERSITY OF PENN", "TRUSTEES OF THE U OF PENN", etc. Then, to limit to the main campus, I only included parcels that are within 10 meters of each other, i.e., UPenn parcels that are densely clustered. The Penn's main campus is then defined by the convex hull of all these included parcels.
+    
 9. With a query involving PWD parcels and census block groups, find the `geo_id` of the block group that contains Meyerson Hall. `ST_MakePoint()` and functions like that are not allowed.
 
     **Structure (should be a single value):**
