@@ -6,18 +6,19 @@ WITH parcel_closest_bus_stop AS (
         parcel.ogc_fid,
         parcel.address AS parcel_address,
         bs.stop_name,
-        ROUND(ST_Distance(parcel.geog, bs.geog)::numeric, 2) AS distance
+        ROUND(ST_DISTANCE(parcel.geog, bs.geog)::numeric, 2) AS distance
     FROM
         phl.pwd_parcels AS parcel
-    JOIN LATERAL (
+    INNER JOIN LATERAL (
         SELECT
-            stop_name,
-            geog
+            bus_stops.stop_name,
+            bus_stops.geog
         FROM septa.bus_stops
-        ORDER BY parcel.geog <-> geog
+        ORDER BY parcel.geog <-> bus_stops.geog
         LIMIT 1
     ) AS bs ON TRUE
 )
+
 SELECT
     parcel_address,
     stop_name,
